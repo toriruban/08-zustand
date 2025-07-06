@@ -6,10 +6,9 @@ import { FetchNotesResponse } from '@/lib/api';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
-import Modal from '@/components/Modal/Modal';
-import NoteForm from '@/components/NoteForm/NoteForm';
 import css from './NotesClient.module.css';
 import { useDebounce } from 'use-debounce';
+import Link from 'next/link';
 
 type NotesClientProps = {
   initialData: FetchNotesResponse;
@@ -20,8 +19,6 @@ const NotesClient = ({ initialData, tag }: NotesClientProps) => {
   const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebounce(search, 500);
   const [page, setPage] = useState(1);
-  const [isModalOpen, setModalOpen] = useState(false);
-
   const { data } = useQuery<FetchNotesResponse>({
     queryKey: ['notes', debouncedSearch, page, tag],
     queryFn: () => fetchNotes({search: debouncedSearch, page, tag}),
@@ -44,20 +41,14 @@ const NotesClient = ({ initialData, tag }: NotesClientProps) => {
             onPageChange={handlePageChange}
           />
         )}
-        <button className={css.button} onClick={() => setModalOpen(true)}>
+        <Link href='/notes/action/create' className={css.button} >
           Create note +
-        </button>
+        </Link>
       </header>
       {data?.notes && data.notes.length > 0 && (
         <NoteList 
         notes={data.notes} 
         />
-      )}
-      {isModalOpen && (
-       <Modal onClose={() => setModalOpen(false)} >
-           <NoteForm onClose={() => setModalOpen(false)} />
-       </Modal>
-      
       )}
     </div>
   );
