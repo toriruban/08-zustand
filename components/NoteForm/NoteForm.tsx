@@ -4,7 +4,7 @@ import React from 'react';
 import { createNote } from '../../lib/api';
 import { useRouter } from 'next/navigation';
 import { NoteTag } from '../../types/note';
-import { useNoteDraftStore } from '@/app/lib/store/noteStore'
+import { useNoteDraftStore } from '@/lib/store/noteStore'
 import css from './NoteForm.module.css';
 
 export default function NoteForm() {
